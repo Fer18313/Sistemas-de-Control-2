@@ -39,7 +39,6 @@ step(5*G_M,0.25);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-BEuler = pid(KP,KI,KD,1/N,Ts,'IFormula','BackwardEuler','DFormula','BackwardEuler');
 
 
 
@@ -50,7 +49,9 @@ BEuler = pid(KP,KI,KD,1/N,Ts,'IFormula','BackwardEuler','DFormula','BackwardEule
 %snew = subs(G1_2,s,z);
 %snew_1 = simplify(snew);
 
-z=tf("z",Ts)
+BEuler = pid(KP,KI,KD,1/N,Ts,'IFormula','BackwardEuler','DFormula','BackwardEuler');
+
+z=tf("z",Ts);
 TfB=(10*z^3) / (2161*z^3 - 5271*z^2 + 4120*z - 1000);
 G_B = feedback(TfB*BEuler,1,-1);
 figure(3);
