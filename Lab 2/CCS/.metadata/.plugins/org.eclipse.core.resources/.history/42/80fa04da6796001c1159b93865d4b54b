@@ -1,0 +1,86 @@
+################################################################################
+# Automatically-generated file. Do not edit!
+################################################################################
+
+SHELL = cmd.exe
+
+# Add inputs and outputs from these tool invocations to the build variables 
+CMD_SRCS += \
+../tm4c123gh6pm.cmd 
+
+LIB_SRCS += \
+C:/ti/TivaWare_C_Series-2.2.0.295/driverlib/ccs/Debug/driverlib.lib 
+
+C_SRCS += \
+../adc2_timer_uart.c \
+../adc_timer_uart.c \
+../adc_timer_uart_startup_ccs.c \
+../adc_uart.c \
+../blinky.c \
+../main.c \
+../timers_uart.c \
+../timers_uart_startup_ccs.c \
+../tm4c123gh6pm_startup_ccs.c \
+../uartstdio.c 
+
+C_DEPS += \
+./adc2_timer_uart.d \
+./adc_timer_uart.d \
+./adc_timer_uart_startup_ccs.d \
+./adc_uart.d \
+./blinky.d \
+./main.d \
+./timers_uart.d \
+./timers_uart_startup_ccs.d \
+./tm4c123gh6pm_startup_ccs.d \
+./uartstdio.d 
+
+OBJS += \
+./adc2_timer_uart.obj \
+./adc_timer_uart.obj \
+./adc_timer_uart_startup_ccs.obj \
+./adc_uart.obj \
+./blinky.obj \
+./main.obj \
+./timers_uart.obj \
+./timers_uart_startup_ccs.obj \
+./tm4c123gh6pm_startup_ccs.obj \
+./uartstdio.obj 
+
+OBJS__QUOTED += \
+"adc2_timer_uart.obj" \
+"adc_timer_uart.obj" \
+"adc_timer_uart_startup_ccs.obj" \
+"adc_uart.obj" \
+"blinky.obj" \
+"main.obj" \
+"timers_uart.obj" \
+"timers_uart_startup_ccs.obj" \
+"tm4c123gh6pm_startup_ccs.obj" \
+"uartstdio.obj" 
+
+C_DEPS__QUOTED += \
+"adc2_timer_uart.d" \
+"adc_timer_uart.d" \
+"adc_timer_uart_startup_ccs.d" \
+"adc_uart.d" \
+"blinky.d" \
+"main.d" \
+"timers_uart.d" \
+"timers_uart_startup_ccs.d" \
+"tm4c123gh6pm_startup_ccs.d" \
+"uartstdio.d" 
+
+C_SRCS__QUOTED += \
+"../adc2_timer_uart.c" \
+"../adc_timer_uart.c" \
+"../adc_timer_uart_startup_ccs.c" \
+"../adc_uart.c" \
+"../blinky.c" \
+"../main.c" \
+"../timers_uart.c" \
+"../timers_uart_startup_ccs.c" \
+"../tm4c123gh6pm_startup_ccs.c" \
+"../uartstdio.c" 
+
+
