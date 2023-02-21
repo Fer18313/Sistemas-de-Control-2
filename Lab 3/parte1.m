@@ -16,9 +16,11 @@ A1=[0,1,0; 0,0,1; -a0,-a1,-a2];
 B1=[0; 0; 1];
 C1=[b0,0,0];
 %Realacion canonica de obsevable 
-A2=[ -a0,1,0; -a1,0,1; -a0,0,-a2];
+A2=[ -a2,1,0;...
+     -a1,0,1;...
+     -a0,0,0];
 B2=[0; 0; b0];
-C2=[0,0,1];
+C2=[1,0,0];
 %ecuacion
 A3=[(-1*(r1+r2)/(r1*r2*c1)), (1/(r2*c1)), -1/(r2*c1); 0,0, -1/(r3*c2); -1/(r2*c3),1/(r2*c3), -1*(r2+r3)/(r2*r3*c3)];
 B3=[1/(r1*c1);0;0];
@@ -28,10 +30,11 @@ G0 = tf([b0], [1, a2, a1, a0]);
 [A4,B4,C4,D4]=tf2ss(G0.Numerator{1},G0.Denominator{1});
 
 %linealizar 
-load('model_linearizacion.mat');
+load('LinearAnaliysisToolProject.mat');
 A5=LinearAnalysisToolProject.LocalVariables.Value.A;
 B5=LinearAnalysisToolProject.LocalVariables.Value.B;  
 C5=LinearAnalysisToolProject.LocalVariables.Value.c; 
+
 
 %5 𝐆(𝑠) = C(𝑠I − A)−1B + D 
 s=tf('s');
