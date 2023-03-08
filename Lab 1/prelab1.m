@@ -21,3 +21,55 @@ pzmap(s);
 %es un sistema estable
 
 linearSystemAnalyzer(s)
+
+
+
+%% hola 
+
+
+G0 = tf(b_0, dem);
+
+%Trayectorias de las variables de estado
+tau = 2; %período de la señal
+Ts = 0.0001; %tiempo de muestreo t = 0:Ts:Tf
+Tf = 2*tau; %Tiempo final
+
+[u, t] = gensig("square", tau, Tf, 0.0001);
+u = -5*u+5;
+%Verificación de la señal generada
+%plot(t,u)
+
+%Inciso 2
+[y, tout, x] = lsim(linsys1, u, t);
+
+%Gráfica X1
+plot(tout, x(1:end,1))
+title("Espacio de estados")
+xlabel('t (s)')
+ylabel('Amplitud')
+hold on
+%Gráfica X2
+plot(tout, x(1:end,2))
+hold on
+%Gráfica X3
+plot(tout, x(1:end,3))
+legend('x1','x2','x3')
+hold off
+
+%Inciso 3
+[y_3, tout_3, x_3] = lsim(linsys3, u, t);
+
+figure()
+plot(tout, x_3(1:end,1))
+title("Espacio de estados usando A3,B3,C3")
+xlabel('t (s)')
+ylabel('Amplitud')
+hold on
+%Gráfica X2
+plot(tout, x_3(1:end,2))
+hold on
+%Gráfica X3
+plot(tout, x_3(1:end,3))
+legend('x1','x2','x3')
+hold off
+
