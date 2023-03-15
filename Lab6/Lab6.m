@@ -34,6 +34,7 @@ R_gamma = rank(gamma); % el sistema es completamente controlable [C.C.]
 
 % matriz de polos de prueba
 p = [-200, -350, -1100];
+%p = [-1100, -100-150i, -100+150i];
 
 % Utilizando el control u = Kx, POLE PLACEMENT
 Kpp = place(A3,B3,p);
@@ -44,7 +45,7 @@ sysAcl = ss(A3-B3*Kpp,B3,C3,0);
 linearSystemAnalyzer(sysAcl);
 
 % RE-ESCALAR LA ENTRADA para mostrar el step correcto
-Nbar = rscale(sysAcl,Kpp);
+Nbar = rscale(sys,Kpp);
 
 % SALIDA LAZO ABIERTO utilizando LSIM
 [y_2,tOut_1,x_2] =lsim(sys,u_1_2,t);
@@ -62,7 +63,7 @@ ylabel('Amplitud')
 figure (2)
 plot(t,y_1);
 hold on
-plot(t,Nbar*u_1_2);
+plot(t,u_1_2);
 hold off
 title('Salida Sistema Cerrado, Variable ss');
 xlabel('t (s)');
