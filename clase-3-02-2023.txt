@@ -1,0 +1,50 @@
+Estabilizacion de sistemas no lineales mediante linealizacion
+% 3/2/2023
+
+Previamente hemos visto pole placement para poder estabilizar los sistemas LTI.
+Este metodo nos permite colocar polos en cualquier posicion deseada.
+
+
+La mayor incognita son los "Polos favoritos"? 
+para poder seleccionar el mejor set de polos> definir una  metrica de evaluacion y someter las distintas respuestas del sistema a esta metrica de evaluacion. 
+respuesta optima> si esto es cierto hablamos de control optimo.
+
+%NOTACION
+* = equilibrio
+estrella = optimo
+
+
+METRICA DE EVALUACION:
+En la metrica de evaluacion hablamos de penalizacion en vez de evaluacion.
+
+penaliza "inestabilidad" lo que genera -> divergencia
+mientras mas grande sea el valor de la variable de estado, mayor penalizacion y si estamos sobreutilizando actuadores estamos tambien siendo penalizados por uso excesivo de energia.
+
+Tenemos matrices de penalizacion (Q y R) que se comportan como matrices positivas definidas, en donde,  todos sus eigenvalores son positivos, ademas son simetricas.
+la metrica debe ser un escalar por lo que utilizaremos una integral, desde un tiempo inicial hacia el infinito (problemas de horizonte infiinito pues buscamos una estabilizacion asintotica).
+
+REGULADOR LINEAL CUADRATICO (LQR) (optimizacion de la integral)
+es un problema que se restringe a que el sistema evolucione segun su dinamica, con dichas restricciones y la solucion al mismo, encontramos el control optimo. 
+Este problema presenta la solucion en forma cerrada: -Kx ( state feedback LTI (!) ) 
+
+
+USO Y TUNEO DE LQR
+1.Seleccion de matrices (Q y R): se inicia con la identidad, modificando los valores de la diagonal para penalizar el comportamiento no deseado en las variables de estado y entradas.
+Si la penalizacion en R es mayor que la de Q, la metrica de evaluacion se ve dominada por la entrada y el LQR minima la accion
+Si la penalizacion es mayor en Q, el control es barato, la metrica se ve dominada por las variables de estado.
+
+2. Penalizacion de salida
+
+3. ganancia estatica y robustez: genera matriz estatica de constantes.
+El LQR presenta un margen de ganancia infinito y garantiza un margen de fase >= 60°
+
+RESUMEN> LA HERRAMIENTA QUE MEJOR RESULTA PARA ESTABILIZAR ES LA DE LQR
+
+LQR en sistemas no lineales se convierte en no optimo
+
+feedforward para velocidad y feeback para robustez
+
+
+
+
+
