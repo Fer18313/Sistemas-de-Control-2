@@ -33,11 +33,11 @@ Nbar = rscale(sys,K);
 Acl = A3-B3*K; % MATRIZ DE LAZO CERRADO
 sysAcl = ss(Acl,B3,C3,0);
 %% INCISO 2
-Q = 3*eye(3);
-R = 2*eye(1);
+Q = 0.1*eye(3);
+R = 1*eye(1);
 K = lqr(sys,Q,R);
 Acl = A3-B3*K;
 sysAcl = ss(Acl,B3,C3,0);
-linearSystemAnalyzer(sysAcl);
+%linearSystemAnalyzer(sysAcl);
 
 %% SEGUNDA PARTE
