@@ -33,8 +33,8 @@ gamma = ctrb(sys); % hasta n-1, la matriz de contrabilidad
 R_gamma = rank(gamma); % el sistema es completamente controlable [C.C.]
 
 % matriz de polos de prueba
-p = [-200, -350, -1100];
-%p = [-1100, -100-150i, -100+150i];
+%p = [-200, -350, -1100];
+p = [-1100, -100-150i, -100+150i];
 
 % Utilizando el control u = Kx, POLE PLACEMENT
 Kpp = place(A3,B3,p);
