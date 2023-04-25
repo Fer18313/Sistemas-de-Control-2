@@ -45,16 +45,19 @@ K_secun = lqr(sys,Q,R);
 Nbar_secun = rscale(sys,K_secun);
 Acl_secun = A3-B3*K_secun;
 sysAcl = ss(Acl_secun,B3,C3,0);
+
+L_new = lqr(A3',C3',Q,R)';
+Acl_new = A3-L_new*C3;
 %linearSystemAnalyzer(sysAcl);
 
 %% SEGUNDA PARTE
 Omega = obsv(A3,C3);
 rank(Omega); %  es observable
-%p = [-1100, -100-150i, -100+150i]; % SECCION 1.2
-p = [-1100,-132-200.43i,-132+200.43i];
-%p = [-200,-350,-1100]; % SECCION 1.12
-%p_L = 3*p
-p_L = p-1000; % polos mas agresivos
+%p = [-1100, -100-150i, -100+150i]; % SECCION 1.3
+%p = [-1100,-132-200.43i,-132+200.43i];
+p = [-200,-350,-1100]; % SECCION 1.12
+p_L = 3*p
+%p_L = p-1000; % polos mas agresivos
 
 Kpp = place(A3,B3,p);
 Nbar_tercero = rscale(sys,Kpp);
@@ -73,10 +76,13 @@ sysAcl = ss(Acl_L,B_L,C_L,D_L);
 K = lqr(A3, B3, Q_prim,R_prim);
 L = lqr(A3', C3', Q_prim,R_prim)';
 Acl_L_P = A3-L*C3;
+Acl_K_P = A3-B3*K;
 Nbar_K_L = rscale(sys,K);
 % inciso b) 
 K_new = lqr(A3,B3,Q,R);
 L_new = lqr(A3',C3',Q,R)';
-Nbar_new = rscale(sys,K_new);
 Acl_new = A3-L_new*C3;
+Nbar_new = rscale(sys,K_new);
+Acl_K_new = A3-B3*K_new;
+
 
