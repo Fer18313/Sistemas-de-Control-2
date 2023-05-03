@@ -23,8 +23,14 @@ u_1_2 = u+1;
 A3=[(-1*(r1+r2)/(r1*r2*c1)), (1/(r2*c1)), -1/(r2*c1); 0,0, -1/(r3*c2); -1/(r2*c3),1/(r2*c3), -1*(r2+r3)/(r2*r3*c3)];
 B3=[1/(r1*c1);0;0];
 C3=[0,1,0];
+<<<<<<< Updated upstream
 sys=ss(A3,B3,C3,0);
 
+=======
+D3=[0,0;...
+   0,0;...
+   0,0];
+>>>>>>> Stashed changes
 %% PRIMERA PARTE
 %% INCISO 1
 % sistema de estados, original
@@ -51,6 +57,7 @@ Acl_new = A3-L_new*C3;
 %linearSystemAnalyzer(sysAcl);
 
 %% SEGUNDA PARTE
+<<<<<<< Updated upstream
 Omega = obsv(A3,C3);
 rank(Omega); %  es observable
 %p = [-1100, -100-150i, -100+150i]; % SECCION 1.3
@@ -84,5 +91,24 @@ L_new = lqr(A3',C3',Q,R)';
 Acl_new = A3-L_new*C3;
 Nbar_new = rscale(sys,K_new);
 Acl_K_new = A3-B3*K_new;
+=======
+% index 2 
+omega=obsv(A3,C3);
+rank(omega)
+% si omega es = 3 
+
+%index 3
+p = [-200, -350, -1100];
+pL = [-2100, -1100-150i, -1100+150i];
+Kpp = place(A3,B3,p);
+LPP = place(A3',C3',pL)';
+
+A_obs=(A3-Lpp*C3);
+B_obs=(B3*Lpp);
+
+
+
+
+>>>>>>> Stashed changes
 
 
