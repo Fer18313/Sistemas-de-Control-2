@@ -61,6 +61,7 @@ float ref = 0; // PE3
 float vc1 = 0; // PE2
 float vc2 = 0;
 float vc3 = 0;
+int Seleccion = 2; // Selecciona el controlador a aplicar
 
 
 void Timer0IntHandler(void){
@@ -102,7 +103,6 @@ void Timer0IntHandler(void){
  /*
   * Definicion de K Nbar
   */
-    int Seleccion = 1; // Selecciona el controlador a aplicar
     if (Seleccion == 0){
         Nbar = 3.575;
         k1= 0.18;
@@ -114,6 +114,16 @@ void Timer0IntHandler(void){
         k1= 0.53;
         k2= 6.17;
         k3= -63.34;
+    }
+    if (Seleccion == 2){
+        //Nbar = 3.3317;
+        //k1= 0.2258;
+        //k2= 2.1059;
+        //k3= -22.3859;
+        Nbar = 1.7321;
+        k1= 0.4356;
+        k2= 0.2964;
+        k3= -7.4084;
     }
  /*
  * Definicion de Controlador

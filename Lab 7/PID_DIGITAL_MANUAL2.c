@@ -1,11 +1,12 @@
 /*
-* PROGRAMACION LABORATORIO 6 DE CONTROL 2
-*
-* Fernando Sandoval 
-* Julio Lopez
-*
-* SECCION: 21
-*/
+ *  PROGRAMACION DE LABORATORIO 6
+ *
+ *  FERNANDO SANDOVAL
+ *  JULIO LOPEZ
+ *
+ *  SECCION 21
+ */
+
 #include <stdint.h>
 #include <stdbool.h>
 #include "inc/hw_ints.h"
@@ -27,10 +28,11 @@
 /*
  * Declaracion de Variables Temporales
  */
-float v0, v1,v2,v3,v4; // para ilustrar el uso devariables tipo float
+float v0,v1,v2,v3,v4; // para ilustrar el uso devariables tipo float
 #define NUM_SPI_DATA 1 // Número de palabras que se envían cadavez
 #define SPI_FREC 4000000 // Frecuencia para el reloj del SPI
 #define SPI_ANCHO 16 // Número de bits que se envían cada vez,entre 4 y 16
+#define frec 10000;
 
 
 uint16_t dato = 0b0111000000000000; // Para lo que se envía por SPI.
@@ -44,10 +46,7 @@ float ed=0;
 float Ek=0;
 float ek_1 = 0;
 float Ek_1 = 0;
-float Kp = 10;
-float Ki = 0.0001;
-float Kd = 0;
-float delta = 0.001;
+
 uint16_t uk_int = 0;
 float k1= 0;
 float k2= 0;
@@ -57,11 +56,48 @@ float ref_n = 0;
 float vc1_n = 0;
 float vc2_n = 0;
 float vc3_n = 0;
-float ref = 0; // PE3
-float vc1 = 0; // PE2
+float vc1 = 0;
 float vc2 = 0;
 float vc3 = 0;
 
+
+// VARIABLES CONTROLADOR
+float ai = 0;
+float aj = 0;
+float ak = 0;
+float bi = 0;
+float bj = 0;
+float bk = 0;
+float ci = 0;
+float cj = 0;
+float ck = 0;
+//Matriz Xk
+float Xk_1 = 0;
+float Xk_2 = 0;
+float Xk_3 = 0;
+//Matriz X_k
+float Xk1_1 = 0;
+float Xk1_2 = 0;
+float Xk1_3 = 0;
+//Matriz B
+float B1 = 1000;
+float B2 = 0;
+float B3 = 0;
+
+//Matriz L
+float L1 = 0;
+float L2 = 0;
+float L3 = 0;
+//Ts
+float Ts = 1.0/frec;
+
+
+//Variables de Feedback
+float u = 0;
+float y = 0;
+float ref = 0;
+
+int Seleccion = 1; // Selecciona el controlador a aplicar
 
 void Timer0IntHandler(void){
     uint32_t pui32DataTx[NUM_SPI_DATA];
@@ -90,39 +126,120 @@ void Timer0IntHandler(void){
 
     }
  /*
- * LABORATORIO 6
+ * LABORATORIO 7
  */
- /*
- * Variables Controlador
- */
-    ref = v0; // PE3
-    vc1 = v1; // PE2
-    vc2 = v2; // PE1
-    vc3 = v3 /*PE0*/ -v4 /*PD3*/;
  /*
   * Definicion de K Nbar
   */
-    int Seleccion = 1; // Selecciona el controlador a aplicar
+
+    // PARA POLE PLACEMENT
+
+    // POLO 1.2
     if (Seleccion == 0){
-        Nbar = 3.575;
-        k1= 0.18;
-        k2= 2.395;
-        k3= -21.79;
+        ref = v0;
+        y = v1;
+        Nbar = 6.3356;
+        k1= 0.244;
+        k2= 5.0916;
+        k3= -31.2116;
+        L1 = 4434;
+        L2 = 3244;
+        L3 = -2411.7;
+        ai = -1100;
+        aj = 0;
+        ak = -10;
+        bi = -4334;
+        bj = -3244;
+        bk = 2421.7;
+        ci = -100;
+        cj = -1000;
+        ck = -20;
     }
+    // POLO 1.12
     if (Seleccion == 1){
+        ref = v0;
+        y = v1;
         Nbar = 7.7;
         k1= 0.53;
         k2= 6.17;
         k3= -63.34;
+        L1 = 5873;
+        L2 = 3830;
+        L3 = -1754.4;
+        ai = -1100;
+        aj = 0;
+        ak = -10;
+        bi = -5773;
+        bj = -3830;
+        bk = 1764.4;
+        ci = -100;
+        cj = -1000;
+        ck = -20;
     }
+
+    // PARA LA TERCERA PARTE
+
+    // Q Y R IDENTIDAD
+    if (Seleccion == 2){
+        ref = v0;
+        y = v1;
+        Nbar = 1.7321;
+        k1= 0.4356;
+        k2= 0.2964;
+        k3= -7.4084;
+        L1 = 0.2373;
+        L2 = 2.6086;
+        L3 = -0.0029;
+        ai = -1100;
+        aj = 0;
+        ak = -10;
+        bi = 99.8;
+        bj = -2.6;
+        bk = 10;
+        ci = -100;
+        cj = -1000;
+        ck = -20;
+    }
+
+    // Q Y R MEJORADAS
+    if (Seleccion == 3){
+        Nbar = 3.3317;
+        k1= 0.2258;
+        k2= 2.1059;
+        k3= -22.3859;
+        L1 = 1.6833;
+        L2 = 18.4968;
+        L3 = -0.1661;
+        ref = v0;
+        y = v1;
+        ai = -1100;
+        aj = 0;
+        ak = -10;
+        bi = 98.3;
+        bj = -18.5;
+        bk = 10.2;
+        ci = -100;
+        cj = -1000;
+        bk = -20;
+    }
+
  /*
  * Definicion de Controlador
  */
     ref_n = ref*Nbar;
-    vc1_n = k1*vc1;
-    vc2_n = k2*vc2;
-    vc3_n = k3*vc3;
+    vc1_n = k1*Xk_1;
+    vc2_n = k2*Xk_2;
+    vc3_n = k3*Xk_3;
     uk_float = ref_n -(vc1_n + vc2_n + vc3_n);
+    u = uk_float;
+
+    Xk1_1 = (ai*Xk_1+bi*Xk_2+ci*Xk_3+B1*u+L1*y)*Ts +Xk_1;
+    Xk1_2 = (aj*Xk_1+bj*Xk_2+cj*Xk_3+B2*u+L2*y)*Ts +Xk_2;
+    Xk1_3 = (ak*Xk_1+bk*Xk_2+ck*Xk_3+B3*u+L3*y)*Ts +Xk_3;
+
+    Xk_1 = Xk1_1;
+    Xk_2 = Xk1_2;
+    Xk_3 = Xk1_3;
 
  // Limites de Uk para que salida este entre el rango
     uk_float=uk_float*4095.0/3.3;
@@ -130,7 +247,7 @@ void Timer0IntHandler(void){
         uk_float = 4095.0;
     }
     if(uk_float<0){
- uk_float = 0;
+        uk_float = 0;
  }
  uk_int = (int)(uk_float);
 // Mapeo para salida por SPI para el DAC
@@ -140,19 +257,19 @@ void Timer0IntHandler(void){
 int
 main(void)
 {
- uint32_t pui32residual[NUM_SPI_DATA];
- uint16_t freq_muestreo = 10000; // En Hz
- SysCtlClockSet(SYSCTL_SYSDIV_2_5 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN |SYSCTL_XTAL_16MHZ); // 80 MHz
- // Configuración de SPI
- SysCtlPeripheralEnable(SYSCTL_PERIPH_SSI0);
- SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
- GPIOPinConfigure(GPIO_PA2_SSI0CLK);
- GPIOPinConfigure(GPIO_PA3_SSI0FSS);
- GPIOPinConfigure(GPIO_PA4_SSI0RX);
- GPIOPinConfigure(GPIO_PA5_SSI0TX);
- GPIOPinTypeSSI(GPIO_PORTA_BASE, GPIO_PIN_5 | GPIO_PIN_4 | GPIO_PIN_3 |GPIO_PIN_2);
- SSIConfigSetExpClk(SSI0_BASE, SysCtlClockGet(), SSI_FRF_MOTO_MODE_0,SSI_MODE_MASTER, SPI_FREC, SPI_ANCHO);
- SSIEnable(SSI0_BASE);
+    uint32_t pui32residual[NUM_SPI_DATA];
+     uint16_t freq_muestreo = 10000; // En Hz
+     SysCtlClockSet(SYSCTL_SYSDIV_2_5 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN |SYSCTL_XTAL_16MHZ); // 80 MHz
+     // Configuración de SPI
+     SysCtlPeripheralEnable(SYSCTL_PERIPH_SSI0);
+     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
+     GPIOPinConfigure(GPIO_PA2_SSI0CLK);
+     GPIOPinConfigure(GPIO_PA3_SSI0FSS);
+     GPIOPinConfigure(GPIO_PA4_SSI0RX);
+     GPIOPinConfigure(GPIO_PA5_SSI0TX);
+     GPIOPinTypeSSI(GPIO_PORTA_BASE, GPIO_PIN_5 | GPIO_PIN_4 | GPIO_PIN_3 |GPIO_PIN_2);
+     SSIConfigSetExpClk(SSI0_BASE, SysCtlClockGet(), SSI_FRF_MOTO_MODE_0,SSI_MODE_MASTER, SPI_FREC, SPI_ANCHO);
+     SSIEnable(SSI0_BASE);
 
 
 
