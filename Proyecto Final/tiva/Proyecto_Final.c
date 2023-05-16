@@ -1,3 +1,11 @@
+/*
+ *  PROGRAMACION DE LABORATORIO 6
+ *
+ *  FERNANDO SANDOVAL
+ *  JULIO LOPEZ
+ *
+ *  SECCION 21
+ */
 //*****************************************************************************
 //
 // invert.c - Example demonstrating the PWM invert function.
@@ -60,59 +68,61 @@
 #define SPI_FREC  4000000
 #define SPI_ANCHO      16
 
-float v0 = 0.0, v1 = 0.0, v2= 0.0, v3= 0.0, v4= 0.0, Nbar, Control;   // para ilustrar el uso de variables tipo float
+float v0 = 0.0, v1 = 0.0, v2= 0.0, v3= 0.0, v4= 0.0, Nbar, Control; // Floats
 uint16_t valor_int;
 uint16_t dato;
-uint16_t freq_timer = 10000;    // frecuencia del timer
-float Ts = 0.0001;     // tiempo de muestreo
+uint16_t freq_timer = 10000;    // Timer frequency
+float Ts = 0.0001;     // Sample Time
 
 
 //*****************************************************************************
 
-// variables del ADC
+// ADC var declaration
 uint32_t s = 0;
+uint32_t pui32ADC0Value[2];
 
-//Variables de control PWM
-int modo = 0;
+// PWM control var declaration
+int modo = 1; // switches case of PWM
 uint16_t duty = 0;
 float y = 0;
-float u, Referencia;
+float u, Ref;
 float temp = 0;
 
-uint32_t pui32ADC0Value[2];
 
 //***************************
 // VARIABLES DE CONTROL LQR
 //***************************
 
-// Matriz Aobs
+// A_obs Matrix
 float alc00 = 0;
 float alc01 = -303.1;
 float alc10 = 10000.0;
 float alc11 = -47.362;
 
-// Matriz B
+// B_obs Matrix
 float b0 = 909.0909;
 float b1 = 0;
 
-// Vector L de observador
+// L_obs Matrix
 float L0 = 0.0660;
 float L1 = 17.0587;
 
-// Vector K de control
+// K control
 float K[2]= {5.3177, 1.1035};
 
 float u = 0;
 float uss = 0.6667;
-// Vector X
+
+
+// X vector
 float x[2] = {0.0, 0.0};
 float x_k1[2];
-float xss[2] = {0.0061, 2.0};
+float xss[2] = {0.0061, 2.0}; // Point of interest
 
 
 
 // ********************
-//          ADC
+//          ADC Config
 // *********************
 void Timer0IntHandler(void)
 {
@@ -123,26 +133,25 @@ void Timer0IntHandler(void)
     }
     ADCIntClear(ADC0_BASE, 2);
     ADCSequenceDataGet(ADC0_BASE, 2, pui32ADC0Value);
- // LEER SALIDA DE LA PLANTA
-    y = (float)(pui32ADC0Value[0]*3.3/4095.0); // salida de la planta
-
+ // Reads the output of plant
+    y = (float)(pui32ADC0Value[0]*3.3/4095.0); // Output of plant conversion
     // ****************CONTROL*******************
 
- // CALCULAR LA SEÑAL DE CONTROL U
+ // Control signal calculation
     u = K[0]*(xss[0]-x[0]) + K[1]*(xss[1]-x[1]) + uss;
 
-  // Observar el comportamiento de U
+  // Show control signal on temp
     temp = u;
 
- // ACTUALIZAR ESTIMADOS DE VARIABLES DE ESTADO
-    x_k1[0] = x[0] + Ts*(alc00*x[0] + alc01*x[1] + b0*u + L0*y); // solo es necesario leer primer vector
+ // Refresh
+    x_k1[0] = x[0] + Ts*(alc00*x[0] + alc01*x[1] + b0*u + L0*y); // All we need is the first vector
     //x_k1[1] = x[1] + Ts*(alc10*x[0] + alc11*x[1] + b1*u + L1*y);
 
     x[0] = 0.001*x_k1[0];
     //x[1] = x_k1[1];
     x[1] = y;
 
- // ACOTAR EL CONTROL U
+ // Delimit control signal
     if(u > 1.0)
         u = 1.0;
     if(u < 0.15)
@@ -150,10 +159,10 @@ void Timer0IntHandler(void)
 
     switch(modo){
     case 0:
-        PWMPulseWidthSet(PWM0_BASE, PWM_OUT_0,  (uint32_t)(SysCtlClockGet()/50000*0.2));
+        PWMPulseWidthSet(PWM0_BASE, PWM_OUT_0,  (uint32_t)(SysCtlClockGet()/50000*0.2)); // 80% DUTY CYCLE
         break;
     case 1:
-        PWMPulseWidthSet(PWM0_BASE, PWM_OUT_0,  (uint32_t)(SysCtlClockGet()/50000*u));
+        PWMPulseWidthSet(PWM0_BASE, PWM_OUT_0,  (uint32_t)(SysCtlClockGet()/50000*u)); // Control gives duty cycle
         break;
     }
 
@@ -171,9 +180,7 @@ void Timer0IntHandler(void)
 int
 main(void)
 {
-    // PARTE DE CONFIG DEL ADC
-
-
+    // ADC CONFIG
     // Set the clocking to run at 80 MHz (200 MHz / 2.5) using the PLL.  When
     // using the ADC, you must either use the PLL or supply a 16 MHz clock source.
     // TODO: The SYSCTL_XTAL_ value must be changed to match the value of the
@@ -187,11 +194,11 @@ main(void)
     // just for this example program and is not needed for ADC operation
 
     // The ADC0 peripheral must be enabled for use.
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_ADC0);         //Activamos los perifericos del modulo de adc
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_ADC0);         // Activates ADC peripherals
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOE);
-    GPIOPinTypeADC(GPIO_PORTE_BASE, GPIO_PIN_3);        //pin E3 canal 0
+    GPIOPinTypeADC(GPIO_PORTE_BASE, GPIO_PIN_3);        // E3 ch 0
     GPIOPinTypeADC(GPIO_PORTE_BASE, GPIO_PIN_2);
-    ADCSequenceConfigure(ADC0_BASE, 2, ADC_TRIGGER_PROCESSOR, 0); //secuencia 2 para maximo 4 pero usamos 1
+    ADCSequenceConfigure(ADC0_BASE, 2, ADC_TRIGGER_PROCESSOR, 0);
     ADCSequenceStepConfigure(ADC0_BASE, 2, 0, ADC_CTL_CH0);
     ADCSequenceStepConfigure(ADC0_BASE, 2, 1, ADC_CTL_CH1 | ADC_CTL_IE | ADC_CTL_END);
     ADCSequenceEnable(ADC0_BASE, 2);
@@ -230,8 +237,6 @@ main(void)
 
     while(1)
     {
-
-
-
+   // increible
     }
 }
