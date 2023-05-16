@@ -95,23 +95,23 @@ float temp = 0;
 
 // A_obs Matrix
 float alc00 = 0;
-float alc01 = -303.1;
-float alc10 = 10000.0;
-float alc11 = -47.362;
+float alc01 = 1.0e04*-0.0100;
+float alc10 = 1.0e04*1.0000;
+float alc11 = 1.0e04*-0.0031;
 
 // B_obs Matrix
-float b0 = 909.0909;
+float b0 = 330.0;
 float b1 = 0;
 
 // L_obs Matrix
-float L0 = 0.0660;
-float L1 = 17.0587;
+float L0 = 0.0008;
+float L1 = 0.2561;
 
 // K control
-float K[2]= {5.3177, 1.1035};
+float K[2]= {3.3529, 0.1829};
 
 float u = 0;
-float uss = 0.6667;
+float uss = 0.6061;
 
 
 // X vector
