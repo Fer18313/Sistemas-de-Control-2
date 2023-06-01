@@ -70,8 +70,8 @@ Kpp = place(A,B,p);
 
 %% Diseño de control por LQR
 Q = eye(2);
-Q(1,1) = 1;
-Q(2,2) = 1;
+Q(1,1) = 10;
+Q(2,2) = 100;
 R_L = 6.48;
 [Klqr,~,poles] = lqr(A,B,Q,R_L);
 Acl = A-Klqr*B;
